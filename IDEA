@@ -1,0 +1,19 @@
+bouwen: terminal systeem voor personal library
+benodigdheden: barcodescanner (KAN NU MET IPHONE OMG -- maar moet ik dan een iphone app maken?)
+Scraper maken?
+
+boeken van kast naar pc krijgen
+-------------------------------
+geschikte barcodescanner voor de iphone: https://itunes.apple.com/us/app/barcode-csv/id660163628?mt=8 (0,99)
+nog beter: https://itunes.apple.com/us/app/beep-a-simple-barcode-scanner/id716115660?mt=8 (0,00)
+Exporteert CSV bestanden.
+
+
+
+
+alles een serienummer geven
+zoeken in systeem
+alle boeken hebben een uitgeleend (persoon,datum,datum retour) - aanwezig status
+makkelijk te bedienen via terminal in linux
+genereert automagisch een webpagina met alles statussen
+
