@@ -9,6 +9,18 @@ logging.basicConfig(filename='horace.log',
 	level=logging.INFO,
 	format='%(asctime)s %(levelname)s: %(message)s')
 
+def usage():
+	helpmessage =	"""
+usage: python lendbooks.py [option] [arg]
+options:
+ -h      : displays this help message
+--help   : same as -h
+ -m name : the person you lend an item
+--member : same as -m
+ -b isbn : the isbn of the item you lend
+--book   : same as -b"""
+	print(helpmessage)
+
 def main(argv):
 	member = "Rincewind"
 	book = 9781473200265
@@ -18,8 +30,14 @@ def main(argv):
 	except getopt.GetoptError:
 		usage()
 		sys.exit(2)
-
-
+	for opt, arg in opts:
+		if opt in ("-h", "--help"):
+			usage()
+			sys.exit()
+		elif opt in ("-m", "--member"):
+			member = arg
+		elif opt in ("-b", "--book"):
+			book = arg
 
 	if os.path.exists("books.json"):
 		with open("books.json") as f:
