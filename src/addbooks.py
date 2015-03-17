@@ -1,7 +1,12 @@
-import urllib
+import urllib.request
 import json
 import csv
 import os.path
+import logging
+
+logging.basicConfig(filename='horace.log',
+	level=logging.INFO,
+	format='%(asctime)s %(levelname)s: %(message)s')
 
 # load the apikey
 with open("apikey.json") as f:
@@ -19,25 +24,30 @@ else:
 
 nr_added = 0
 # open csv with isbn number to add to the list
-with open("../data/test.csv", 'rb') as f:
+with open("../data/test.csv", 'rt') as f:
 	reader = csv.reader(f,delimiter=';')
 	for row in reader:
 		if row[0] in books:
 			continue
-		bookinfo = json.load(urllib.urlopen(baseurl+"book/"+row[0]))
+		with urllib.request.urlopen(baseurl+"book/"+row[0]) as url:
+			bookinfo = json.load(url)
+		#%bookinfo = json.load(urllib.urlopen(baseurl+"book/"+row[0]))
 		if "error" in bookinfo: 
-			print "[Error] "+bookinfo["error"]
+			#print("[Error] "+bookinfo["error"])
+			logging.error(bookinfo["error"])
 			continue
 		item = bookinfo["data"][0]
 		authorlist = []
 		for auth in item["author_data"]:
 			authorlist.append(auth["name"])
-		librarybook = dict(title=item["title"],authors=authorlist,available=True)
+		librarybook = dict(bookinfo=(dict(title=item["title"],authors=authorlist)),status=(dict(available=True,borrowdate=None,member=None)))
 		books[row[0]] = librarybook
 		nr_added += 1
 
-print "%s books were added to the list." %nr_added
+#print("%s books were added to the list." %nr_added)
+logging.info("%s books were added to the library", nr_added)
 towrite = json.dumps(books)
 
 with open("books.json",'wb') as f:
 	f.write(towrite)
+	logging.info("Library updated.")
