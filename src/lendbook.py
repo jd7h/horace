@@ -47,12 +47,14 @@ def main(argv):
 		logging.error("Couldn't locate file books.json")
 		sys.exit(2)
 
+	print(type(book))
+
 	if book in library:
-		if library[book][status][available]:
-			library[book][status][available] = False
-			library[book][status][member] = member
-			library[book][status][date] = time.strftime("%x")
-			logging.info("LOAN %s (%s) to %s", library[book][title], book, member)
+		if library[book]['status']['available']:
+			library[book]['status']['available'] = False
+			library[book]['status']['member'] = member
+			library[book]['status']['date'] = time.strftime("%x")
+			logging.info("LOAN %s (%s) to %s", library[book]['info']['title'], book, member)
 		else:
 			#print("[ERROR] book %s is not available" %book)
 			logging.error("Book %s is not available", book)

@@ -38,7 +38,7 @@ with open("../data/test.csv", 'rt') as f:
 		authorlist = []
 		for auth in item["author_data"]:
 			authorlist.append(auth["name"])
-		librarybook = dict(bookinfo=(dict(title=item["title"],authors=authorlist)),status=(dict(available=True,borrowdate=None,member=None)))
+		librarybook = dict(info=(dict(title=item["title"],authors=authorlist)),status=(dict(available=True,date=None,member=None)))
 		books[row[0]] = librarybook
 		print(row[0])
 		nr_added += 1
