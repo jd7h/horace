@@ -1,5 +1,5 @@
-import urllib.request
 import json
+import requests
 import csv
 import os.path
 import logging
@@ -29,11 +29,9 @@ with open("../data/test.csv", 'rt') as f:
 	for row in reader:
 		if row[0] in books:
 			continue
-		with urllib.request.urlopen(baseurl+"book/"+row[0]) as url:
-			bookinfo = json.load(url)
-		#%bookinfo = json.load(urllib.urlopen(baseurl+"book/"+row[0]))
+		r = requests.get(baseurl+"book/"+row[0])
+		bookinfo = r.json()
 		if "error" in bookinfo: 
-			#print("[Error] "+bookinfo["error"])
 			logging.error(bookinfo["error"])
 			continue
 		item = bookinfo["data"][0]
@@ -42,6 +40,7 @@ with open("../data/test.csv", 'rt') as f:
 			authorlist.append(auth["name"])
 		librarybook = dict(bookinfo=(dict(title=item["title"],authors=authorlist)),status=(dict(available=True,borrowdate=None,member=None)))
 		books[row[0]] = librarybook
+		print(row[0])
 		nr_added += 1
 
 #print("%s books were added to the list." %nr_added)
@@ -49,5 +48,5 @@ logging.info("%s books were added to the library", nr_added)
 towrite = json.dumps(books)
 
 with open("books.json",'wb') as f:
-	f.write(towrite)
+	f.write(towrite.encode('utf-8'))
 	logging.info("Library updated.")
