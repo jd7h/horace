@@ -47,8 +47,6 @@ def main(argv):
 		logging.error("Couldn't locate file books.json")
 		sys.exit(2)
 
-	print(type(book))
-
 	if book in library:
 		if library[book]['status']['available']:
 			library[book]['status']['available'] = False
@@ -63,10 +61,10 @@ def main(argv):
 		#print("[Error] book %s not found in library" %book)
 		logging.error("Book %s not found in library", book)
 
-	updated_library = json.dumps(books)
+	updated_library = json.dumps(library)
 
 	with open("books.json",'wb') as f:
-		f.write(updated_library)
+		f.write(updated_library.encode('utf-8'))
 		logging.info("Updated library file")
 
 
